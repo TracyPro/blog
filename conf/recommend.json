@@ -1,0 +1,40 @@
+{
+  "msg": "文章推荐",
+  "articles": [
+    {
+      "id": 1,
+      "title": "golang入门指南",
+      "url": "https://www.ctolib.com/docs//sfile/the-way-to-go_ZH_CN/index.html",
+      "image": "/static/images/go_1.jpg",
+      "category": "技术文章"
+    },
+    {
+      "id": 2,
+      "title": "golang菜鸟教程",
+      "url": "https://www.runoob.com/go/go-tutorial.html",
+      "image": "/static/images/go_2.png",
+      "category": "技术文章"
+    },
+    {
+      "id": 3,
+      "title": "gol语言中文网",
+      "url": "http://docscn.studygolang.com/",
+      "image": "/static/images/go_3.jpg",
+      "category": "技术文章"
+    },
+    {
+      "id": 4,
+      "title": "golang开源项目",
+      "url": "https://baijiahao.baidu.com/s?id=1626690531613281832&wfr=spider&for=pc",
+      "image": "/static/images/go_4.jpg",
+      "category": "技术文章"
+    },
+    {
+      "id": 5,
+      "title": "beego教程",
+      "url": "https://www.kancloud.cn/hello123/beego/126087",
+      "image": "/static/images/go_5.jpg",
+      "category": "技术文章"
+    }
+  ]
+}
