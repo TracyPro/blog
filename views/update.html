@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>编辑文章</title>
+    <link rel="shortcut icon" href="/static/images/favicon.png">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome 5.x图标库（检查主题以更改此内容） -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!--  Krajee Markdown编辑器主库默认样式 -->
+    <link rel="stylesheet" href="/static/css/markdown-editor.css"/>
+    <!-- -突出显示代码样式插件提供的JS样式 -->
+    <link rel="stylesheet" href="/static/css/highlight.min.css"/>
+
+
+</head>
+<body>
+<section class="main-content">
+    <input value="{{.article.Title}}" id="title" type="text" class="weui-input" placeholder="请输入标题" required autofocus>
+    <input value="{{.article.Category.Id | CatesTitle}}" id="category" type="text" class="weui-input"
+           placeholder="请输入类别"
+           required autofocus>
+    <input value="{{.article.Author}}" id="author" type="text" class="weui-input" placeholder="请输入作者" required
+           autofocus>
+    <input value="{{.article.Source}}" id="source" type="text" class="weui-input" placeholder="请输入来源" required
+           autofocus>
+    <input value="{{.article.Url}}" id="img_link" type="text" class="weui-input" placeholder="请输入互联网图片链接" required
+           autofocus>
+</section>
+<textarea id="editor" rows="25">{{.article.Meta}}</textarea>
+
+<div class="row">
+    <div class="col-sm-4">
+    </div>
+    <div class="col-sm-2">
+        <button type="submit" class="btn btn-block btn-primary"><i class="fa fa-check"></i> 提交更新</button>
+    </div>
+    <div class="col-sm-2">
+        <button type="reset" class="btn btn-block btn-default"><i class="fa fa-ban"></i> 重置</button>
+    </div>
+    <div class="col-sm-4">
+    </div>
+</div>
+
+<!-- jQuery JS Library -->
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+<!-- -如果您需要净化HTML输出，请包含DOM purify插件（只有在markdown-it HTML输入时才需要）被允许）。必须在markdown-editor.js之前加载。 -->
+<script src="/static/js/purify.min.js"></script>
+<!-- Markdown IT主库 -->
+<script src="/static/js/markdown-it.min.js"></script>
+<!-- 降价IT定义列表插件 -->
+<script src="/static/js/markdown-it-deflist.min.js"></script>
+<!-- Markdown IT Footnote插件 -->
+<script src="/static/js/markdown-it-footnote.min.js"></script>
+<!-- Markdown IT缩写插件 -->
+<script src="/static/js/markdown-it-abbr.min.js"></script>
+<!-- Markdown IT下标插件 -->
+<script src="/static/js/markdown-it-sub.min.js"></script>
+<!-- Markdown IT上标插件 -->
+<script src="/static/js/markdown-it-sup.min.js"></script>
+<!-- Markdown IT下划线/插入文本插件 -->
+<script src="/static/js/markdown-it-ins.min.js"></script>
+<!-- Markdown IT Mark Plugin -->
+<script src="/static/js/markdown-it-mark.min.js"></script>
+<!-- Markdown IT SmartArrows插件 -->
+<script src="/static/js/markdown-it-smartarrows.min.js"></script>
+<!-- 降价IT复选框插件 -->
+<script src="/static/js/markdown-it-checkbox.min.js"></script>
+<!-- Markdown IT East Asian Characters Line Break Plugin -->
+<script src="/static/js/markdown-it-cjk-breaks.min.js"></script>
+<!-- Markdown IT Emoji插件 -->
+<script src="/static/js/markdown-it-emoji.min.js"></script>
+<!--   Twitter Emojis插件（如果你需要twitter emojis） -->
+<script src="http://twemoji.maxcdn.com/2/twemoji.min.js?11.0"></script>
+<!-- 突出显示代码样式的JS主插件库 -->
+<script src="/static/js/highlight.min.js"></script>
+{{/*<script src="/Users/tracy/Downloads/mark-demo-master/plugins/highlight/highlight.min.js"></script>*/}}
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="/static/js/markdown-editor.js"></script>
+<!-- 如果需要，可以选择包含theme.js脚本或theme.css用于不同的主题 -->
+<script src="/static/js/theme.js"></script>
+<!-- 如果需要，可以选择包含您语言的本地化脚本 -->
+<script src="/static/js/zh.js"></script>
+<link rel="stylesheet" href="/static/css/weui.min.css">
+<script src="/static/js/hullabaloo.js"></script>
+<script>
+
+    $(function () {
+        var options = {
+            language: "zh",                //语言格式
+            theme: "fa4",                   //主题 默认fa5
+            bsVersion: "3",                // default (uses bs4 version)
+            defaultMode: 'editor',         //默认编辑模式
+            enableUndoRedo: true,          //启用撤销
+            enableSplitMode: true,         //启用分离模式
+            enableLivePreview: undefined,  //启用动态预览
+            enableScrollSync: true,        //启用同步滚动
+            startFullScreen: false,        //开启全屏幕
+            enableEmojies: true,           //启用表情
+            useTwemoji: true,              //用Twitter家表情
+            purifyHtml: true,              //启用净化html requires purify.js plugin
+            showAlerts: true,              //显示弹出框
+            exportUrl: "",                 //导出url 默认为''插件在内部呈现导出表单以将其提交到exportUrl服务器操作以处理导出内容以供下载。
+            exportUrlMethod: 'post',       //方法
+//  exportUrlAddlData: $h.EMPTY,   //导出url附加数据
+//  today: $h.EMPTY,               //今天 默认''
+            alertFadeDuration: 2000,       //弹出淡入时间
+            outputParseTimeout: 1800000,   //解析输出超时时间
+            alertMsgCss: 'alert alert-danger',
+            defaultButtonCss: 'btn btn-default btn-outline-secondary',
+            defaultButtonGroupCss: 'btn-group md-btn-group',
+            previewModeButtons: ['hint', 'fullscreen', 'mode', 'export'],
+            buttonCss: {},
+            buttonGroupCss: {},
+            buttonAccessKeys: {},
+            dropdownCss: {},
+            icons: {},
+
+        }
+        var mm = $("#editor").markdownEditor(options);
+    })
+
+    $(".btn-primary").click(function () {
+        $.hulla = new hullabaloo();
+        if ($("#title").val() == "" || $("#category").val() == "" || $("#author").val() == "" || $("#editor").val() == "" || $("#source").val() == "") {
+            $.hulla.send("文章信息不完整，请补充完再发布！", "danger")
+            return
+        } else {
+            var url_link = $("#img_link").val()
+            if (url_link == "") {
+                url_link = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564648193665&di=3511876300ae026d57be4060345d46f1&imgtype=0&src=http%3A%2F%2Fpic.rmb.bdstatic.com%2F0116f0d68fa5879056bc101e91639d6c.png"
+            }
+            $.post("/article/update/submit", {
+                title: $("#title").val(),
+                category: $("#category").val(),
+                author: $("#author").val(),
+                detail: $("#editor").val(),
+                source: $("#source").val(),
+                link: url_link
+            }, function () {
+                $.hulla.send("更新发布成功！", "success")
+                sleep()
+                window.location.href = "/"
+            })
+        }
+    })
+
+    $(".btn-default").click(function () {
+        $.hulla = new hullabaloo();
+        $("#editor").val('');
+        $.hulla.send("内容已重置！", "success")
+    })
+
+    $("textarea").on(
+            'keydown',
+            function (e) {
+                if (e.keyCode == 9) {
+                    e.preventDefault();
+                    var indent = '    ';
+                    var start = this.selectionStart;
+                    var end = this.selectionEnd;
+                    var selected = window.getSelection().toString();
+                    selected = indent + selected.replace(/\n/g, '\n' + indent);
+                    this.value = this.value.substring(0, start) + selected
+                            + this.value.substring(end);
+                    this.setSelectionRange(start + indent.length, start
+                            + selected.length);
+                }
+            })
+
+</script>
+
+<script type="text/javascript">
+    function sleep() {
+        for (var temp = Date.now(); Date.now() - temp <= 1000;) ;
+    }
+</script>
+
+</body>
+</html>

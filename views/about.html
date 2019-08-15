@@ -1,0 +1,151 @@
+<!doctype html>
+<html>
+<head>
+    <link rel="shortcut icon" href="/static/images/favicon.png">
+    <title>Tracy博客 | RNG荣誉</title>
+    <meta charset="utf-8">
+    <meta charset="gb2312">
+    <meta name="keywords" content="个人博客"/>
+    <link href="/static/css/base.css" rel="stylesheet">
+    <link href="/static/css/main.css" rel="stylesheet">
+    <script type="text/javascript" src="/static/js/jquery.js"></script>
+</head>
+<body>
+<div class="topnav">
+    <a href="http://www.tthcclove.cn" target="_blank">Tracy博客 💘 创作你的创作</a>――本站文章部分来自网络<a
+        href="http://www.tthcclove.cn" target="_blank">如有涉嫌侵权，请与本站邮箱联系</a>
+{{if .IsLogin}}
+    <div style="float: right">
+        <a class="btn log-in" id="sign_in" href="/login?exit=true">退出</a>
+    </div>
+{{else}}
+    <div style="float: right">
+        <a class="btn sign-up" id="sign_up" href="/register">注册</a>
+        <a class="btn log-in" id="sign_in" href="/login">登录</a>
+    </div>
+{{end}}
+
+</div>
+<div id="wrapper">
+    <header>
+        <div class="headtop"></div>
+        <div class="contenttop">
+            <div class="logo f_l">Tracy博客 💘 创作你的创作</div>
+            <div class="search f_r">
+                <form action="/article/query" method="post">
+                    <input name="keyboard" id="keyboard" class="input_text" value="请输入关键字"
+                           style="color: rgb(153, 153, 153);"
+                           onfocus="if(value=='请输入关键字'){this.style.color='#000';value=''}"
+                           onblur="if(value==''){this.style.color='#999';value='请输入关键字'}" type="text">
+                    <input name="show" value="title" type="hidden">
+                    <input name="tempid" value="1" type="hidden">
+                    <input name="tbname" value="news" type="hidden">
+                    <input name="Submit" id="search" class="input_submit" type="submit">
+                </form>
+            {{/*<button>登陆</button>*/}}
+            </div>
+            <div class="blank"></div>
+            <nav>
+                <div class="navigation">
+                    <ul class="menu">
+                        <li><a href="/">首页</a></li>
+                        <li><a href="#">生活记录</a>
+                            <ul>
+                                <li><a href="/about">RNG荣誉</a></li>
+                                <li><a href="/listpic">我的相册</a></li>
+                                <li><a href="/listvideo">我的视频</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="/articles/technology">技术文章</a></li>
+                        <li><a href="/article/list">文章列表</a></li>
+                        <li><a href="javascript:void(0);" onclick="judge_is_login();">写文章</a></li>
+                    </ul>
+                </div>
+            </nav>
+            <SCRIPT type=text/javascript>
+                // Navigation Menu
+                $(function () {
+                    $(".menu ul").css({display: "none"}); // Opera Fix
+                    $(".menu li").hover(function () {
+                        $(this).find('ul:first').css({visibility: "visible", display: "none"}).slideDown("normal");
+                    }, function () {
+                        $(this).find('ul:first').css({visibility: "hidden"});
+                    });
+                });
+            </SCRIPT>
+        </div>
+    </header>
+    <div class="container">
+        <div class="con_content">
+            <div class="about_box">
+                <h2 class="nh1"><span>您现在的位置是：<a href="/" target="_blank">生活记录</a>>><a href="#"
+                                                                                       target="_blank">RNG荣誉</a></span><b>RNG荣誉</b>
+                </h2>
+                <div class="f_box">
+                    <p class="a_title">RNG荣誉</p>
+                    <p class="p_title"></p>
+                </div>
+                <ul class="about_content">
+                    <h1><strong>2012年</strong></h1>
+                    <div>
+                        <p>2012年5月，皇族电子竞技俱乐部成立。皇族英雄联盟战队在2012年11月的TGA大奖赛冬季总决赛取得亚军。接下来在GUNNAR杯英雄联盟邀请赛上皇族战胜了OMG战队取得冠军。</p>
+                    </div>
+                    <h1><strong>2013年</strong></h1>
+                    <div>
+                        <p>皇族英雄联盟战队在英伟达游戏群英汇上取得亚军。在全国电子竞技赛取得季军。在全球总决赛上，在决赛上败于SKT战队，取得亚军。</p>
+                    </div>
+                    <h1><strong>2014年</strong></h1>
+                    <div>
+                        <p>
+                            皇族英雄联盟战队在2014年英雄联盟职业联赛春季赛上积分不足，止步小组赛，皇族英雄联盟分部在夏季赛签下2名韩援选手，成功晋级季后赛，在季后赛上以2：3败于OMG战队止步八强。在全球总决赛上战胜了EDG战队、OMG战队晋级决赛，最终在决赛上以1：3败于SSW战队取得亚军。</p>
+                    </div>
+                    <h1><strong>2015年</strong></h1>
+                    <div>
+                        <p>
+                            在2015年英雄联盟职业联赛春季赛上以积分不足，在保级赛败于GT战队保级失败，降级至英雄联盟甲级职业联赛。俱乐部通过与VG、KING和GT电子竞技俱乐部的四方交易，获得了VG电子竞技俱乐部二队VG.P战队的LPL名额和部分KING、GT战队的选手后用VG.P战队的LPL名额正式更名RNG战队。在2015年LPL夏季赛上，因积分不足，进入保级赛，成功保级。</p>
+                    </div>
+                    <h1><strong>2016年</strong></h1>
+                    <div>
+                        <p>
+                            RNG英雄联盟战队在2016年LPL春季赛上取得冠军，晋级2016年季中邀请赛，在季中邀请赛上在半决赛以1：3败于SKT战队，止步四强，在夏季赛上RNG战队取得亚军，以全年积分最高的战队获得参加2016年全球总决赛的参赛资格，在2016年全球总决赛RNG战队在淘汰赛上以1：3败于SKT战队止步八强。在德玛西亚杯年终总决赛上止步四强。</p>
+                    </div>
+                    <h1><strong>2017年</strong></h1>
+                    <div>
+                        <p>
+                            RNG英雄联盟战队在春季赛上，以小组第一晋级季后赛，在季后赛上取得亚军。在德玛西亚杯长沙站，RNG英雄联盟战队取得冠军。在LPL夏季赛上，RNG战队取得亚军，以全年积分最高的战队获得全球总决赛的参赛资格。在半决赛上败于SKT战队止步四强。</p>
+                    </div>
+                    <h1><strong>2018年</strong></h1>
+                    <div>
+                        <p>
+                            RNG英雄联盟战队在2018年LPL春季赛上一穿四夺冠，并小组第一身份进入2018年MSI季中邀请赛决赛，以3:1战胜了韩国KZ战队夺得冠军；6月，在珠海举办的德玛西亚杯夏季赛上RNG战队以大比分全胜的战绩取得冠军；7月，在大连举办的亚洲对抗赛决赛，RNG豪取两分帮助LPL逆转，成功卫冕；9月，在南京举办的2018LPL夏季赛决赛，RNG以比分3：2击败iG，完成春夏双冠，以LPL一号种子身份进入S8全球总决赛；10月，英雄联盟S8全球总决赛8强赛上，RNG不敌G2，止步8强。
+                        </p>
+                    </div>
+                    <h1><strong>2019年</strong></h1>
+                    <div>
+                        <p>RNG英雄联盟战队在2019年LPL春季赛上，成功晋级季后赛，在季后赛首轮以2:3败于JDG战队止步六强。</p>
+                    </div>
+
+                    <p></p>
+                    <p><img src="/static/images/rng.jpeg" width="30%"></p>
+                    <p>“既然你不言败，那我就不放弃”。 </p>
+                </ul>
+            </div>
+        </div>
+        <div class="blank"></div>
+    </div>
+    <!-- container代码 结束 -->
+</div>
+
+<script type="text/javascript">
+    function judge_is_login() {
+        $.post("/article/new", {}, function (is_login) {
+            if (is_login == "false" || is_login == false) {
+                alert("请先登录")
+            } else {
+                window.location.href = "/article/new"
+            }
+        })
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!doctype html>
+<html>
+<head>
+    <link rel="shortcut icon" href="/static/images/favicon.png">
+    <title>Tracy博客 | 文章列表</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="baidu-site-verification" content="CtYt4injW1"/>
+    <meta name="360-site-verification" content="a75dcb147688915b4cc7cfaa71e996a2"/>
+    <meta name="keywords" content="个人博客"/>
+    <meta name="keywords" content="博客搭建"/>
+    <meta name="keywords" content="博客网站"/>
+    <meta>
+    <meta charset="utf-8">
+    <meta charset="gb2312">
+    <meta name="keywords" content="谈同个人博客♠★♠一个前端设计的热血青年"/>
+    <meta name="description" content="谈同个人博客♠★♠一个前端设计的热血青年"/>
+    <link href="/static/css/base.css" rel="stylesheet">
+    <link href="/static/css/main.css" rel="stylesheet">
+    <link href="/static/css/bootstrap.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <script src="/static/js/modernizr.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="/static/js/jquery.js"></script>
+
+    <script type="text/javascript" src="/static/js/jquery.js"></script>
+    <script src="/static/js/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/hullabaloo.js"></script>
+</head>
+<body>
+<div class="topnav">
+    <a href="http://www.tthcclove.cn" target="_blank">Tracy博客 💘 创作你的创作</a>――本站文章部分来自网络<a
+        href="http://www.tthcclove.cn" target="_blank">如有涉嫌侵权，请与本站邮箱联系</a>
+{{if .IsLogin}}
+    <div style="float: right">
+        <a class="btn log-in" id="sign_in" href="/login?exit=true">退出</a>
+    </div>
+{{else}}
+    <div style="float: right">
+        <a class="btn sign-up" id="sign_up" href="/register">注册</a>
+        <a class="btn log-in" id="sign_in" href="/login">登录</a>
+    </div>
+{{end}}
+
+</div>
+<div id="wrapper">
+    <header>
+        <div class="headtop"></div>
+        <div class="contenttop">
+            <div class="logo f_l">Tracy博客 💘 创作你的创作</div>
+            <div class="search f_r">
+                <form action="/article/query" method="post">
+                    <input name="keyboard" id="keyboard" class="input_text" value="请输入关键字"
+                           style="color: rgb(153, 153, 153);"
+                           onfocus="if(value=='请输入关键字'){this.style.color='#000';value=''}"
+                           onblur="if(value==''){this.style.color='#999';value='请输入关键字'}" type="text">
+                    <input name="show" value="title" type="hidden">
+                    <input name="tempid" value="1" type="hidden">
+                    <input name="tbname" value="news" type="hidden">
+                    <input name="Submit" id="search" class="input_submit" type="submit">
+                </form>
+            {{/*<button>登陆</button>*/}}
+            </div>
+            <div class="blank"></div>
+            <nav>
+                <div class="navigation">
+                    <ul class="menu">
+                        <li><a href="/">首页</a></li>
+                        <li><a href="#">生活记录</a>
+                            <ul>
+                                <li><a href="/about">RNG荣誉</a></li>
+                                <li><a href="/listpic">我的相册</a></li>
+                                <li><a href="/listvideo">我的视频</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="/articles/technology">技术文章</a></li>
+                        <li><a href="/article/list">文章列表</a></li>
+                        <li><a href="javascript:void(0);" onclick="judge_is_login();">写文章</a></li>
+                    </ul>
+                </div>
+            </nav>
+            <SCRIPT type=text/javascript>
+                // Navigation Menu
+                $(function () {
+                    $(".menu ul").css({display: "none"}); // Opera Fix
+                    $(".menu li").hover(function () {
+                        $(this).find('ul:first').css({visibility: "visible", display: "none"}).slideDown("normal");
+                    }, function () {
+                        $(this).find('ul:first').css({visibility: "hidden"});
+                    });
+                });
+            </SCRIPT>
+        </div>
+    </header>
+    <div class="container">
+        <div class="con_content">
+            <div class="about_box">
+                <h2 class="nh1"><span>您现在的位置是：<a href="/" target="_blank">首页</a>>><a href="#"
+                                                                                     target="_blank">文章列表</a></span><b>文章列表</b>
+                </h2>
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th nowrap>编号</th>
+                        <th nowrap>标题</th>
+                        <th nowrap>分类</th>
+                        <th nowrap>作者</th>
+                        <th nowrap>创建时间</th>
+                        <th nowrap>更新时间</th>
+                        <th nowrap>更新</th>
+                        <th nowrap>删除</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{range .articles}}
+                    <tr>
+                        <th scope="row">{{.Id}}</th>
+                        <td>{{.Title}}</td>
+                        <td nowrap>{{.Category.Id | CatesTitle}}</td>
+                        <td nowrap>{{.Author}}</td>
+                        <td nowrap>{{date .Created "Y-m-d H:i:s"}}</td>
+                        <td nowrap>{{date .Updated "Y-m-d H:i:s"}}</td>
+                        <td nowrap>
+                            <button type="button" class="btn btn-success btn-sm" onclick="update_article({{.Id}})">编辑
+                            </button>
+                        </td>
+                        <td nowrap>
+                            <button type="button" class="btn btn-danger btn-sm" onclick="del_article({{.Id}})">删除
+                            </button>
+                        </td>
+                    </tr>
+                    {{end}}
+                    </tbody>
+                </table>
+            {{/*{{if gt .paginator.PageNums 0}}*/}}
+                <div class="pagelist" align="center">
+                    页次：{{.current}}/{{.paginator.PageNums}} 每页{{.per}} 总数{{.total}}
+                {{if .paginator.HasPrev}}
+                    <a href="{{.paginator.PageLinkFirst}}">首页</a>
+                    <a href="{{.paginator.PageLinkPrev}}">上一页</a>
+                {{else}}
+                    <a href="javascript:void(0);" class="disabled">首页</a>
+                    <a href="javascript:void(0);" class="disabled">上一页</a>
+                {{end}}
+                {{if .paginator.HasNext}}
+                    <a href="{{.paginator.PageLinkNext}}">下一页</a>
+                    <a href="{{.paginator.PageLinkLast}}">尾页</a>
+                {{else}}
+                    <a href="javascript:void(0);" class="disabled">下一页</a>
+                    <a href="javascript:void(0);" class="disabled">尾页</a>
+                {{end}}
+                </div>
+            </div>
+        </div>
+        <div class="blank"></div>
+        <!-- container代码 结束 -->
+    </div>
+</div>
+<!--百度推送代码-->
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        }
+        else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+<script>
+    function click_upload() {
+        window.location.href = "/upload/images"
+    }
+</script>
+
+
+<script>
+    function update_article(article_id) {
+        $.post("/article/update", {id: article_id}, function (status) {
+        })
+        window.location.href = "/article/update"
+    }
+</script>
+<script src="/static/js/hullabaloo.js"></script>
+<script>
+    function del_article(article_id) {
+        $.hulla = new hullabaloo();
+        $.post("/article/delete/did", {id: article_id}, function (status) {
+            if (status == 1) {
+                $.hulla.send("文章删除成功！", "success")
+                window.location.href = "/article/list"
+            } else {
+                $.hulla.send("文章删除失败！", "danger")
+            }
+        })
+    }
+</script>
+<script type="text/javascript">
+    function judge_is_login() {
+        $.post("/article/new", {}, function (is_login) {
+            if (is_login == "false" || is_login == false) {
+                alert("请先登录")
+                // window.location.href = "/"
+            } else {
+                window.location.href = "/article/new"
+            }
+        })
+    }
+</script>
+</body>
+</html>

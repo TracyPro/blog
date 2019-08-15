@@ -1,0 +1,214 @@
+<!doctype html>
+<html>
+<head>
+    <link rel="shortcut icon" href="/static/images/logo.png">
+    <meta charset="utf-8">
+    <meta charset="gb2312">
+    <meta name="keywords" content="个人博客"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="baidu-site-verification" content="CtYt4injW1"/>
+    <meta name="360-site-verification" content="a75dcb147688915b4cc7cfaa71e996a2"/>
+    <title>Royal Never Give Up</title>
+    <link href="/static/css/base.css" rel="stylesheet">
+    <link href="/static/css/index.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <script src="/static/js/modernizr.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="/static/js/jquery.js"></script>
+</head>
+<body>
+<div class="topnav">
+    <a href="http://www.tthcclove.cn" target="_blank">Tracy博客 💘 创作你的创作</a>――本站文章部分来自网络<a
+        href="http://www.tthcclove.cn" target="_blank">如有涉嫌侵权，请与本站邮箱联系</a>
+{{if .IsLogin}}
+    <div style="float: right">
+        <a class="btn log-in" id="sign_in" href="/login?exit=true">退出</a>
+    </div>
+{{else}}
+    <div style="float: right">
+        <a class="btn sign-up" id="sign_up" href="/register">注册</a>
+        <a class="btn log-in" id="sign_in" href="/login">登录</a>
+    </div>
+{{end}}
+
+</div>
+<div id="wrapper">
+    <header>
+        <div class="headtop"></div>
+        <div class="contenttop">
+            <div class="logo f_l">Tracy博客 💘 创作你的创作</div>
+            <div class="search f_r">
+                <form action="/article/query" method="post">
+                    <input name="keyboard" id="keyboard" class="input_text" value="请输入关键字"
+                           style="color: rgb(153, 153, 153);"
+                           onfocus="if(value=='请输入关键字'){this.style.color='#000';value=''}"
+                           onblur="if(value==''){this.style.color='#999';value='请输入关键字'}" type="text">
+                    <input name="show" value="title" type="hidden">
+                    <input name="tempid" value="1" type="hidden">
+                    <input name="tbname" value="news" type="hidden">
+                    <input name="Submit" id="search" class="input_submit" type="submit">
+                </form>
+            {{/*<button>登陆</button>*/}}
+            </div>
+            <div class="blank"></div>
+            <nav>
+                <div class="navigation">
+                    <ul class="menu">
+                        <li><a href="/">首页</a></li>
+                        <li><a href="#">生活记录</a>
+                            <ul>
+                                <li><a href="/about">RNG荣誉</a></li>
+                                <li><a href="/listpic">我的相册</a></li>
+                                <li><a href="/listvideo">我的视频</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="/articles/technology">技术文章</a></li>
+                        <li><a href="/article/list">文章列表</a></li>
+                        <li><a href="javascript:void(0);" onclick="judge_is_login();">写文章</a></li>
+                    </ul>
+                </div>
+            </nav>
+            <SCRIPT type=text/javascript>
+                // Navigation Menu
+                $(function () {
+                    $(".menu ul").css({display: "none"}); // Opera Fix
+                    $(".menu li").hover(function () {
+                        $(this).find('ul:first').css({visibility: "visible", display: "none"}).slideDown("normal");
+                    }, function () {
+                        $(this).find('ul:first').css({visibility: "hidden"});
+                    });
+                });
+            </SCRIPT>
+        </div>
+    </header>
+    <div class="jztop"></div>
+    <style type="text/css">
+        p {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+            overflow: hidden;
+        }
+    </style>
+    <div class="container">
+        <div class="bloglist f_l">
+        {{range .articles}}
+            <h3><a href="/article/detail?id={{.Id}}" onclick="view_detail({{.Id}})" target="_blank">{{.Title}}</a></h3>
+            <figure><img width="155" ; height="90" ; src={{.Url}} alt="文章概要配图"></figure>
+            <ul>
+                <p>
+                {{.Content}}
+                </p>
+                <a id="read_more" onclick="view_detail({{.Id}})"
+                   href="/article/detail?id={{.Id}}" target="_blank" class="readmore">阅读全文&gt;&gt;</a>
+            </ul>
+            <p class="dateview"><span>{{date .Created "Y-m-d H:i:s"}}</span><span>作者：{{.Author}}</span><span>标签：[<a
+                    href="/article/search/category?={{.Category.Id | CatesTitle}}"
+                    onclick="search_category({{.Category.Id}})">{{.Category.Id | CatesTitle}}</a>]</span></p>
+        {{end}}
+        {{if gt .paginator.PageNums 1}}
+            <div class="pagelist" align="center">
+                页次：{{.current}}/{{.paginator.PageNums}} 每页{{.per}} 总数{{.total}}
+            {{if .paginator.HasPrev}}
+                <a href="{{.paginator.PageLinkFirst}}">首页</a>
+                <a href="{{.paginator.PageLinkPrev}}">上一页</a>
+            {{else}}
+                <a href="javascript:void(0);" class="disabled">首页</a>
+                <a href="javascript:void(0);" class="disabled">上一页</a>
+            {{end}}
+            {{if .paginator.HasNext}}
+                <a href="{{.paginator.PageLinkNext}}">下一页</a>
+                <a href="{{.paginator.PageLinkLast}}">尾页</a>
+            {{else}}
+                <a href="javascript:void(0);" class="disabled">下一页</a>
+                <a href="javascript:void(0);" class="disabled">尾页</a>
+            {{end}}
+            </div>
+        {{end}}
+        </div>
+
+        <!--首页主要文章部分结束-->
+
+        <div class="r_box f_r">
+        {{template "mine"}}
+            <div class="tuwen">
+                <h3 class="tit">图文推荐</h3>
+                <ul>
+                    <ul>
+                    {{range .recommends}}
+                        <li><a href={{.Url}}><img src={{.Image}}><b>{{.Title}}</b></a>
+                            <p><span class="tulanmu"><a
+                                    href="https://golang.google.cn/">golang</a></span><span
+                                    class="tutime">{{date .Date "Y-m-d H:i:s"}}</span></p>
+                        </li>
+                    {{end}}
+                    </ul>
+                </ul>
+            </div>
+            <div class="ph">
+                <h3 class="tit">点击排行</h3>
+                <ul class="rank">
+                {{range .rank_arts}}
+                    <li><a href="/article/rank/detail?id={{.Id}}" onclick="post_rid({{.Id}})" title="【心路历程】一篇关于设计理念的文章"
+                           target="_blank">{{.Title}}</a>
+                    </li>
+                {{end}}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- container代码 结束 -->
+    <div class="jzend"></div>
+</div>
+<!--百度推送代码-->
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        }
+        else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+{{/*阅读全文*/}}{{/*统计浏览文章次数*/}}
+<script type="text/javascript">
+    function view_detail(article_id) {
+        $.post("/article/aid", {id: article_id}, function () {
+        })
+    }
+</script>
+
+<script type="text/javascript">
+    function post_rid(rid) {
+        $.post("/article/rid", {id: rid}, function () {
+        })
+    }
+</script>
+
+<script type="text/javascript">
+    function search_category(cid) {
+        $.post("/article/search/cid", {id: cid, cate_flag: "click_category"}, function () {
+        })
+    }
+</script>
+<script type="text/javascript">
+    function judge_is_login() {
+        $.post("/article/new", {}, function (is_login) {
+            if (is_login == "false" || is_login == false) {
+                alert("请先登录")
+                // window.location.href = "/"
+            } else {
+                window.location.href = "/article/new"
+            }
+        })
+    }
+</script>
+</body>
+</html>

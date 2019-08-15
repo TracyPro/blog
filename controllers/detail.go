@@ -14,6 +14,7 @@ type DetailController struct {
 
 func (c *DetailController) Get() {
 	c.Data["article"] = models.DetailArt
+	c.Data["IsLogin"] = VerifyCookie(c.Ctx)
 	c.TplName = "detail.html"
 }
 

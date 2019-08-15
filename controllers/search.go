@@ -29,6 +29,7 @@ func (c *SearchController) Get() {
 	// ----------------------------------------------------
 	recommends := models.GetRecommendData()
 	c.Data["recommends"] = recommends
+	c.Data["IsLogin"] = VerifyCookie(c.Ctx)
 	c.TplName = "results.html"
 }
 

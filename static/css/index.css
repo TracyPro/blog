@@ -1,6 +1,7 @@
 @charset "gb2312";
 .container {
-	background: #e5e5e5;
+	/*background: #e5e5e5;*/
+	background: #FFFFFF;
 	overflow: hidden;
 	width: 1000px;
 	margin: auto;
@@ -15,7 +16,7 @@ input{
 color:#000;
 }
 
-/* 热门评论/最新评论 - 下边线 */
+/* ???��??�?/???��??�? - �?边线 */
 #SOHUCS #SOHU_MAIN #SOHU-comment-main .section-list-w .block-title-gw ul{
 border-bottom:2px solid #88abc3;
 background-color:transparent;
@@ -25,8 +26,8 @@ background-color:transparent;
 	width: 100%;
 	overflow: hidden;
 }
-/*¾íÖá*/
-/*内容区头部图片卷一样的图片*/
+/*¾í?á*/
+/*??容�?�头?��?��???��??��???��??*/
 .jztop {
 	background: url(../images/maintopbg.jpg) no-repeat;
 	width: 1034px;
@@ -39,7 +40,7 @@ background-color:transparent;
 	margin: auto;
 	height: 14px;
 }
-/*ÎÄÕÂ*/
+/*????*/
 .bloglist {
 	width: 620px;
 	overflow: hidden;
@@ -50,7 +51,7 @@ background-color:transparent;
 	margin: 20px 0 10px 0;
 	color: #333;
 	font-size: 16px;
-	font-family: "Î¢ÈíÑÅºÚ";
+	font-family: "?¢?í??º?";
 }
 .bloglist figure {
 	float: left;
@@ -105,7 +106,7 @@ a.readmore {
 	padding-left: 40px;
 	margin: 0 0 10px 0
 }
-/* ¹Ø×¢ÎÒ */
+/* ¹??¢?? */
 .gzwm ul {
 	width: 100%;
 	overflow: hidden;
@@ -137,7 +138,7 @@ a.readmore {
 .gzwm li a:hover {
 	opacity: 0.6;
 }
-/*Í¼ÎÄÁÐ±í*/
+/*?¼????±í*/
 .tuwen {
 	width: 100%;
 	clear: both;
@@ -186,7 +187,7 @@ a.readmore {
 .tuwen li:hover {
 	background: #f4f3f3
 }
-/*ÅÅÐÐ*/
+/*????*/
 .rank li {
 	height: 25px;
 	line-height: 25px;
@@ -209,7 +210,7 @@ a.readmore {
 .ph {
 	overflow: hidden
 }
-/*Ê×Ò³ÓÒ²à¹ã¸æ 300*/
+/*???³??²?¹ã¸æ 300*/
 .ad {
 	width: 300px;
 	overflow: hidden;

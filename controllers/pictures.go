@@ -23,6 +23,6 @@ func (c *PictureController) Get() {
 	c.Data["paginator"] = po
 	per_imgs := models.FilterImgs(PER_IMGS, po.Page(), jpgs)
 	c.Data["imgs"] = per_imgs
-
+	c.Data["IsLogin"] = VerifyCookie(c.Ctx)
 	c.TplName = "listpic.html"
 }

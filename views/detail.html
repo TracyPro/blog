@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<!--[if IE 6]><html class="ie lt-ie8"><![endif]-->
+<!--[if IE 7]><html class="ie lt-ie8"><![endif]-->
+<!--[if IE 8]><html class="ie ie8"><![endif]-->
+<!--[if IE 9]><html class="ie ie9"><![endif]-->
+<!--[if !IE]><!-->
+<html> <!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="/static/images/favicon.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+    <title>{{.article.Title}}</title>
+    <meta name="csrf-param" content="authenticity_token"/>
+    <meta name="csrf-token"
+          content="YnjnfyAw4jxAoHpI73O7ohlTAzcli+fKrKuOLSQUyU7xAuBvoHWHFbSgFDmu+wpypmZzXUUb1Y3NeUcll5FMFA=="/>
+{{/*<link rel="stylesheet" media="all" href="//cdn2.jianshu.io/assets/web-30728a1164102859481d.css"/>*/}}
+    <link rel="stylesheet" media="all" href="/static/css/jianshu_entry_aa.css"/>
+    <link href="/static/css/base.css" rel="stylesheet">
+    <link href="/static/css/main.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <script src="/static/js/modernizr.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="/static/js/jquery.js"></script>
+    <script src="/static/js/shang.js"></script>
+
+    <script type="text/javascript" src="/static/js/jquery.js"></script>
+    <script src="/static/js/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/hullabaloo.js"></script>
+
+    <link href="/static/css/prettify.css" rel="stylesheet">
+    <script src="/static/js/prettify.js"></script>
+</head>
+
+<body>
+<div class="topnav">
+    <a href="http://www.tthcclove.cn" target="_blank">Tracy博客 💘 创作你的创作</a>――本站文章部分来自网络<a
+        href="http://www.tthcclove.cn" target="_blank">如有涉嫌侵权，请与本站邮箱联系</a>
+{{if .IsLogin}}
+    <div style="float: right">
+        <a class="btn log-in" id="sign_in" href="/login?exit=true">退出</a>
+    </div>
+{{else}}
+    <div style="float: right">
+        <a class="btn sign-up" id="sign_up" href="/register">注册</a>
+        <a class="btn log-in" id="sign_in" href="/login">登录</a>
+    </div>
+{{end}}
+
+</div>
+<div id="wrapper">
+    <header>
+        <div class="headtop"></div>
+        <div class="contenttop">
+            <div class="logo f_l">Tracy博客 💘 创作你的创作</div>
+            <div class="search f_r">
+                <form action="/article/query" method="post">
+                    <input name="keyboard" id="keyboard" class="input_text" value="请输入关键字"
+                           style="color: rgb(153, 153, 153);"
+                           onfocus="if(value=='请输入关键字'){this.style.color='#000';value=''}"
+                           onblur="if(value==''){this.style.color='#999';value='请输入关键字'}" type="text">
+                    <input name="show" value="title" type="hidden">
+                    <input name="tempid" value="1" type="hidden">
+                    <input name="tbname" value="news" type="hidden">
+                    <input name="Submit" id="search" class="input_submit" type="submit">
+                </form>
+            {{/*<button>登陆</button>*/}}
+            </div>
+            <div class="blank"></div>
+            <nav>
+                <div class="navigation">
+                    <ul class="menu">
+                        <li><a href="/">首页</a></li>
+                        <li><a href="#">生活记录</a>
+                            <ul>
+                                <li><a href="/about">RNG荣誉</a></li>
+                                <li><a href="/listpic">我的相册</a></li>
+                                <li><a href="/listvideo">我的视频</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="/articles/technology">技术文章</a></li>
+                        <li><a href="/article/list">文章列表</a></li>
+                        <li><a href="javascript:void(0);" onclick="judge_is_login();">写文章</a></li>
+                    </ul>
+                </div>
+            </nav>
+            <SCRIPT type=text/javascript>
+                // Navigation Menu
+                $(function () {
+                    $(".menu ul").css({display: "none"}); // Opera Fix
+                    $(".menu li").hover(function () {
+                        $(this).find('ul:first').css({visibility: "visible", display: "none"}).slideDown("normal");
+                    }, function () {
+                        $(this).find('ul:first').css({visibility: "hidden"});
+                    });
+                });
+            </SCRIPT>
+        </div>
+    </header>    <!-- container代码 开始 -->
+    <div class="container">
+        <div class="con_content">
+            <div class="about_box">
+                <h2 class="nh1"><span>您现在的位置是：<a href="/" target="_blank">网站首页</a>>><a href="#"
+                                                                                       target="_blank">【文章详情】</a></span><b>{{.article.Title}}
+                </b>
+                </h2>
+                <div class="f_box">
+                    <p class="a_title">{{.article.Title}}</p>
+                    <p class="p_title"></p>
+                    <p class="box_p">
+                        <span>发布时间：{{date .article.Created "Y-m-d H:i:s"}}</span><span>作者：{{.article.Author}}</span><span>来源：{{.article.Source}}</span><span>浏览数：{{.article.Click}}</span>
+                    </p>
+                    <!-- 可用于内容模板 -->
+                </div>
+                <div class="note">
+                    <div id="note-fixed-ad-container">
+                        <div id="fixed-ad-container">
+                            <div id="write-notes-ad"></div>
+                            <div id="youdao-fixed-ad"></div>
+                            <div id="yuxi-fixed-ad"></div>
+                            <div id="zhangxin-fixed-ad"></div>
+                            <div id="_so_pdsBy_0"></div>
+                        </div>
+                    </div>
+                    <div class="post">
+                        <div class="article">
+                            <!-- 文章内容 -->
+                            <div data-note-content class="show-content">
+                                <div class="show-content-free">
+                                {{/*<p>*/}}
+                                    {{str2html .article.Content}}
+                                    {{/*</p>*/}}
+                                </div>
+                            </div>
+                        </div>
+                        <div data-vcomp="free-reward-panel"></div>
+                        <div id="note-ad" class=""></div>
+                        <div id="vue_comment"></div>
+                    </div>
+                    <div class="vue-side-tool" props-data-props-show-qr-code="0"></div>
+                </div>
+            </div>
+        </div>
+        <div class="blank"></div>
+    </div>
+    <!-- container代码 结束 -->
+    <div class="shang_a">
+        <div class="one"></div>
+        <div class="two"><img src="/static/images/wechat.jepg" alt="" width="200" height="200"></div>
+
+    </div>
+</div>
+</div>
+<!--百度推送代码-->
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        }
+        else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+<script type="text/javascript">
+    function judge_is_login() {
+        $.post("/article/new", {}, function (is_login) {
+            if (is_login == "false" || is_login == false) {
+                alert("请先登录")
+                // window.location.href = "/"
+            } else {
+                window.location.href = "/article/new"
+            }
+        })
+    }
+</script>
+</body>
+</html>

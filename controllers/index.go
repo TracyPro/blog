@@ -43,6 +43,8 @@ func (c *IndexController) Get() {
 	// ----------------------------------------------------
 	recommends := models.GetRecommendData()
 	c.Data["recommends"] = recommends
+	// 判断用户是否登陆，决定显示"登陆"还是"退出"
+	c.Data["IsLogin"] = VerifyCookie(c.Ctx)
 	c.TplName = "index.html"
 }
 
@@ -54,6 +56,8 @@ func (c *IndexController) Post() {
 	source := c.GetString("source")
 	link := c.GetString("link")
 	html_content := string(blackfriday.Run([]byte(meta)))
-	models.AddArticleContent(title, link, html_content, meta, author, category, source)
+	ck, _ := c.Ctx.Request.Cookie("uname")
+	user := ck.Value
+	models.AddArticleContent(title, link, html_content, meta, author, category, source, user)
 	c.TplName = "index.html"
 }

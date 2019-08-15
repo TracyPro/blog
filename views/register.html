@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Tracy博客 | 用户注册</title>
+    <link href="/static/images/favicon.png" rel="shortcut icon"/>
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.4.0/css/bootstrap.min.css" rel="stylesheet">
+{{/*<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">*/}}
+
+</head>
+<body style=" background:  no-repeat center center fixed; background-size: 100%;">
+
+
+<div class="modal-dialog" style="margin-top: 10%;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title text-center" id="myModalLabel">注册</h4>
+        </div>
+        <div class="modal-body" id="model-body">
+            <div class="form-group">
+                <input name="uname" id="name" type="text" class="form-control" placeholder="用户名(不少于5位)"
+                       autocomplete="off">
+            </div>
+            <div class="form-group">
+                <input name="pwd" id="pwd" type="password" class="form-control" placeholder="密码(不少于6位)"
+                       autocomplete="off">
+            </div>
+            <div class="form-group">
+                <input name="confirm_pwd" id="confirm" type="password" class="form-control"
+                       placeholder="确认密码(与密码一致)"
+                       autocomplete="off">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary form-control" onclick="register();">注册
+                </button>
+            </div>
+        </div>
+    </div><!-- /.modal-content -->
+</div><!-- /.modal -->
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+<script src="/static/js/hullabaloo.js"></script>
+<script type="text/javascript" src="/static/js/jquery-form.js"></script>
+
+
+<script type="text/javascript">
+    function register() {
+        var name = document.getElementById("name").value;
+        var pwd = document.getElementById("pwd").value;
+        var confirm = document.getElementById("confirm").value;
+        $.hulla = new hullabaloo();
+        if (name.length < 5) {
+            $.hulla.send("用户名长度不得少于5！", "danger")
+            return
+        } else if (pwd.length < 6) {
+            $.hulla.send("密码长度不得少于6！", "danger")
+            return
+        } else if (confirm != pwd) {
+            $.hulla.send("两次密码输入不一致！", "danger")
+            return
+        }
+        var uname = name.toString()
+        var passwd = pwd.toString()
+        $.post("/register", {name: uname, pwd: passwd}, function (status) {
+            if (status == true) {
+                $.hulla.send("注册成功", "success")
+                window.location.href = "/"
+            } else {
+                $.hulla.send("用户名已注册", "danger")
+            }
+        })
+    };
+
+    //为keyListener方法注册按键事件
+    document.onkeydown = keyListener;
+
+    function keyListener(e) {
+        // 当按下回车键，执行我们的代码
+        if (e.keyCode == 13) {
+            register();
+        }
+    }
+</script>
+</body>
+</html>

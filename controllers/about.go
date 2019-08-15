@@ -9,5 +9,6 @@ type AboutController struct {
 }
 
 func (c *AboutController) Get() {
+	c.Data["IsLogin"] = VerifyCookie(c.Ctx)
 	c.TplName = "about.html"
 }

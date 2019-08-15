@@ -14,6 +14,7 @@ type RankController struct {
 
 func (c *RankController) Get() {
 	c.Data["rank_arts"] = models.DetailArt
+	c.Data["IsLogin"] = VerifyCookie(c.Ctx)
 	c.TplName = "rank.html"
 }
 

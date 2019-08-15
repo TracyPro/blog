@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/astaxie/beego/config"
 	"github.com/astaxie/beego/orm"
+	"golang.org/x/crypto/bcrypt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -30,23 +31,23 @@ const (
 
 // 文章
 type Article struct {
-	Id       int       // 编号
-	Title    string    // 标题
-	Url      string    // 图片链接
+	Id       int                          // 编号
+	Title    string                       // 标题
+	Url      string                       // 图片链接
 	Content  string    `orm:"type(text)"` // 转为html格式的字符串内容
 	Meta     string    `orm:"type(text)"` // 用户编辑的原始内容
 	Category *Category `orm:"rel(fk)"`    // 设置一对多关系，一个分类多篇文章
-	Click    int       // 点击数
-	Created  time.Time `orm:"index"` // 发布时间
-	Updated  time.Time `orm:"index"` // 更新时间
-	Author   string    // 作者
-	Source   string    // 来源
-	User     string    // 文章对应的登陆用户
+	Click    int                          // 点击数
+	Created  time.Time `orm:"index"`      // 发布时间
+	Updated  time.Time `orm:"index"`      // 更新时间
+	Author   string                       // 作者
+	Source   string                       // 来源
+	User     string                       // 文章对应的登陆用户
 }
 
 // 分类
 type Category struct {
-	Id      int       // 编号
+	Id      int                      // 编号
 	Title   string    `orm:"unique"` // 类别
 	Created time.Time `orm:"index"`  // 创建时间
 	Updated time.Time `orm:"index"`  // 更新时间
@@ -63,18 +64,12 @@ type Mine struct {
 
 // 图文推荐
 type Recommend struct {
-	Id       int       // 编号
-	Title    string    // 推荐文章标题
-	Url      string    // 文章第三方链接，将推荐文章设置为第三方文章
-	Image    string    // 图片链接
+	Id       int                       // 编号
+	Title    string                    // 推荐文章标题
+	Url      string                    // 文章第三方链接，将推荐文章设置为第三方文章
+	Image    string                    // 图片链接
 	Date     time.Time `orm:"index"`   // 链接上线日期
 	Category *Category `orm:"rel(fk)"` // 推荐文章类别
-}
-
-// 点击排行
-type Rank struct {
-	Id      int      // 编号
-	Article *Article `orm:"rel(one)"` // 文章
 }
 
 // 相册图片
@@ -88,10 +83,17 @@ type VideoList struct {
 	Id  int    // 编号
 	Url string // 链接
 }
+type User struct {
+	Id     int
+	Name   string
+	Pwd    string
+	Status int // 当前登陆状态，0未登陆，1已登陆
+	Family int // 1管理员，0普通用户
+}
 
 func RegisterDB() {
 	orm.RegisterModel(new(Article), new(Category),
-		new(Mine), new(Recommend), new(Rank), new(JpgList), new(VideoList))
+		new(Mine), new(Recommend), new(JpgList), new(VideoList), new(User))
 	orm.RegisterDriver("mysql", orm.DRMySQL)
 	orm.RegisterDataBase("default", "mysql", "root:root@/blog?charset=utf8")
 	orm.Debug = true
@@ -112,7 +114,7 @@ func AddCategory(title string) *Category {
 	return category
 }
 
-func AddArticleContent(title, url, html_content, meta, author, category, source string) {
+func AddArticleContent(title, url, html_content, meta, author, category, source, user string) {
 	o := orm.NewOrm()
 	category_ptr := AddCategory(category)
 	article := &Article{
@@ -125,6 +127,7 @@ func AddArticleContent(title, url, html_content, meta, author, category, source 
 		Updated:  time.Now(),
 		Author:   author,
 		Source:   source,
+		User:     user,
 	}
 	_, err := o.Insert(article)
 	if err != nil {
@@ -413,7 +416,7 @@ func GetEditArticle(art_id string) {
 }
 
 func UpdateArticle(u_id, title, url, html_content,
-	meta, author, category, source string) {
+meta, author, category, source string) {
 	o := orm.NewOrm()
 	u_id_int, _ := strconv.Atoi(u_id)
 	category_ptr := UpdateCategory(category)
@@ -465,4 +468,64 @@ func UpdateCategory(title string) *Category {
 		log.Fatal(err)
 	}
 	return new_update_cate
+}
+
+func Encryption(pwd string) string {
+	hash, _ := bcrypt.GenerateFromPassword([]byte(pwd), bcrypt.DefaultCost)
+	db_pwd := string(hash)
+	return db_pwd
+}
+
+func VerifyPwd(db_pwd, pwd string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(db_pwd), []byte(pwd))
+	if err != nil {
+		return false
+	}
+	return true
+}
+
+func Register(name, pwd string) bool {
+	o := orm.NewOrm()
+	db_pwd := Encryption(pwd)
+	user := &User{
+		Name:   name,
+		Pwd:    db_pwd,
+		Family: 0,
+	}
+	qs := o.QueryTable("user")
+	if err := qs.Filter("name", name).One(user); err != nil {
+		o.Insert(user)
+		return true
+	}
+	return false
+}
+
+func Login(name, pwd string) bool {
+	o := orm.NewOrm()
+	qs := o.QueryTable("user")
+	user := &User{
+		Name: name,
+	}
+	err := qs.Filter("name", name).One(user)
+	if err != nil {
+		return false
+	}
+	// 用户存在 验证密码是否正确
+	if VerifyPwd(user.Pwd, pwd) {
+		user.Status = 1
+		o.Update(user, "Status")
+		return true
+	}
+	return false
+}
+
+func FilterUserArts(uname string) ([]*Article, int) {
+	o := orm.NewOrm()
+	qs := o.QueryTable("article")
+	var arts []*Article
+	_, err := qs.Filter("user", uname).All(&arts)
+	if err != nil {
+		return nil, 0
+	}
+	return arts, len(arts)
 }

@@ -23,5 +23,6 @@ func (c *VideoController) Get() {
 	c.Data["paginator"] = po
 	per_videos := models.FilterVideos(PER_VIDEOS, po.Page(), videos)
 	c.Data["videos"] = per_videos
+	c.Data["IsLogin"] = VerifyCookie(c.Ctx)
 	c.TplName = "listvideo.html"
 }

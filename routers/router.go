@@ -30,4 +30,6 @@ func init() {
 	beego.Router("/article/delete/did", &controllers.ArticleController{}, "POST:DelArticle")
 	beego.Router("/article/update", &controllers.UpdateController{})
 	beego.Router("/article/update/submit", &controllers.UpdateController{}, "POST:PostUpdate")
+	beego.Router("/register", &controllers.RegisterController{})
+	beego.Router("/login", &controllers.LoginController{})
 }
