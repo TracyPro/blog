@@ -529,3 +529,11 @@ func FilterUserArts(uname string) ([]*Article, int) {
 	}
 	return arts, len(arts)
 }
+
+func AdminInfo()(string, string){
+	iniconf, err := config.NewConfig("ini", CONF)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return iniconf.String("user"), iniconf.String("pwd")
+}
