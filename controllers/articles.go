@@ -63,5 +63,6 @@ func IsAdmin(ctx *context.Context) bool {
 		return false
 	}
 	pwd := ck.Value
-	return uname == "admin" && pwd == "antiy?1024"
+	a_user, a_pwd := models.AdminInfo()
+	return uname == a_user && pwd == a_pwd
 }
